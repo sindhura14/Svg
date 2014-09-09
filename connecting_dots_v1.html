@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        html,body{
+            height:100%;
+
+        }
+
+        div.circle{
+            position: fixed;
+            top:0;
+            left:0;
+            height : 5px;
+            width: 5px;
+            border-radius: 3px;
+            background-color: black;
+
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            var arr=[];
+            var svg = document.getElementsByTagName('svg')[0];
+
+
+            function lines(arr){
+                for(var i=0;i<arr.length;i++){
+                    if(i==0){
+                        var path = document.createElementNS("http://www.w3.org/2000/svg",'path');
+                        path.setAttribute('d','M'+arr[i].positionX+" "+arr[i].positionY);
+                        path.style.stroke ='red';
+                        /*path.style.strokeWidth='2';*/
+                        svg.appendChild(path);
+                    }
+                    else{
+                        var path = document.createElementNS("http://www.w3.org/2000/svg",'path');
+                        path.setAttribute('d','M'+arr[i-1].positionX+" "+arr[i-1].positionY+" "+"L"+" "+arr[i].positionX+" "+arr[i].positionY);
+
+                        path.style.stroke ='red';
+                        /*path.style.strokeWidth='2';*/
+                        svg.appendChild(path);
+
+                    }
+                }
+            }
+
+            document.body.addEventListener('click',function(event){
+                // this code is executed once we do a mouse-click on the body
+                //creating an array of objects with position X and y of this click  as values to props
+                arr.push({
+                    positionX : event.pageX,
+                    positionY : event.pageY
+                });
+                console.log(arr);
+
+                //passing the arrary of indexes to the function that add the indexes to attribute "d" of SVG path element
+                lines(arr);
+                var circle = document.createElementNS("http://www.w3.org/2000/svg",'circle');
+                circle.setAttribute('cx',event.pageX)
+                circle.setAttribute('cy',event.pageY)
+                circle.setAttribute('r',4);
+                svg.appendChild(circle);
+            })
+
+        })
+    </script>
+</head>
+<body>
+<svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+
+</svg>
+</body>
+</html>
